@@ -3,15 +3,19 @@ import { tUserRequest, tUserResponse } from "../interfaces/users.interfaces";
 import { User } from "../entities/user.entitie";
 import { AppDataSource } from "../data-source";
 import { AppError } from "../errors/AppError";
-import { userRequestSchema, userResponseSchema } from "../schemas/users.schema";
+import {
+  userPatchSchema,
+  userRequestSchema,
+  userResponseSchema,
+} from "../schemas/users.schema";
 
 const patchUserService = async (
   userId: number,
   userData: tUserRequest
 ): Promise<tUserResponse> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
-  const userValidatedData = userRequestSchema.parse(userData);
-  const oldUserData: User | null = await userRepository.findOne({
+  const userValidatedData = userPatchSchema.parse(userData);
+  const oldUserData: User | null | any = await userRepository.findOne({
     where: {
       id: userId,
     },
@@ -21,7 +25,7 @@ const patchUserService = async (
     throw new AppError("User not found", 404);
   }
 
-  const newUserData: tUserRequest = userRepository.create({
+  const newUserData: tUserRequest | any = userRepository.create({
     ...oldUserData,
     ...userValidatedData,
   });
@@ -29,7 +33,7 @@ const patchUserService = async (
 
   const returnedUser = userResponseSchema.parse(newUserData);
 
-  return userResponseSchema.parse(returnedUser);
+  return returnedUser;
 };
 
 export { patchUserService };

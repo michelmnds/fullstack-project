@@ -16,4 +16,10 @@ const userRequestSchema = userSchema.omit({
 });
 const userResponseSchema = userSchema;
 
-export { userRequestSchema, userResponseSchema, userSchema };
+const userPatchSchema = z.object({
+  full_name: z.string().nullish(),
+  email: z.string().email().nullish(),
+  phone_number: z.string().nullish(),
+});
+
+export { userRequestSchema, userResponseSchema, userSchema, userPatchSchema };
