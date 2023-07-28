@@ -9,7 +9,7 @@ const createUserService = async (
   data: tUserRequest
 ): Promise<tUserResponse> => {
   const { email, full_name, phone_number } = data;
-  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  const userRepository = AppDataSource.getRepository(User);
   const findUser = await userRepository.findOne({
     where: {
       email,
@@ -19,7 +19,7 @@ const createUserService = async (
   if (findUser) {
     throw new AppError("User already exists", 409);
   }
-  console.log(email);
+
   const user: User = userRepository.create(data);
   await userRepository.save(user);
 
