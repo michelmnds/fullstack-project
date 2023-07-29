@@ -21,7 +21,7 @@ class Contact {
   register_date: Date;
 
   @ManyToOne(() => User, (user) => user.contacts)
-  user: User[];
+  user: User;
 }
 
 export { Contact };

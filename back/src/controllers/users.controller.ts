@@ -56,5 +56,4 @@ export {
   getUserController,
   deleteUserController,
   patchUserController,
-  patchUserService,
 };
