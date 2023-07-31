@@ -6,42 +6,37 @@ import {
 import { Contact } from "../entities/contact.entitie";
 import { AppDataSource } from "../data-source";
 import { AppError } from "../errors/AppError";
-import {
-  contactRequestSchema,
-  contactResponseSchema,
-} from "../schemas/contact.shcema";
-import { Request } from "express";
+import { contactResponseSchema } from "../schemas/contact.shcema";
+
 import { User } from "../entities/user.entitie";
 
 const createContactSerivce = async (
-  userId: any,
+  userId: number,
   data: tContactRequest
 ): Promise<tContactResponse> => {
   const { email, full_name, phone_number } = data;
-  const contactRepository = AppDataSource.getRepository(Contact);
-  const userRepository = AppDataSource.getRepository(User);
-  const findContact = await contactRepository.findOne({
+
+  const contactRepository: Repository<Contact> =
+    AppDataSource.getRepository(Contact);
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+
+  const user: User | null = await userRepository.findOne({
     where: {
-      email,
+      id: userId,
     },
   });
-  const user: any = await userRepository.findOne({ where: { id: userId } });
 
   if (!user) {
-    throw new AppError("Invalid userId", 404);
+    throw new AppError("User not found", 404);
   }
 
-  if (findContact) {
-    throw new AppError("Contact already exists", 409);
-  }
-
-  const savedContact = await contactRepository.save({
+  const contact = contactRepository.create({
     ...data,
     user,
   });
-  const returnedContact = contactResponseSchema.parse(savedContact);
+  await contactRepository.save(contact);
 
-  return returnedContact;
+  return contactResponseSchema.parse(contact);
 };
 
 export { createContactSerivce };

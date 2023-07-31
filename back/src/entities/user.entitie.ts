@@ -17,7 +17,7 @@ class User {
   email: string;
   @Column()
   phone_number: string;
-  @CreateDateColumn()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   register_date: Date;
 
   @OneToMany(() => Contact, (contact) => contact.user)

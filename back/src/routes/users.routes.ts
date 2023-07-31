@@ -25,7 +25,7 @@ userRoutes.post(
   createContactController
 );
 userRoutes.get("", getUserController);
-userRoutes.get("/contact", getAllContactsController);
+userRoutes.get("/:id/contact", getAllContactsController);
 userRoutes.delete("/:id", deleteUserController);
 userRoutes.patch("/:id", emailValidation, patchUserController);
 userRoutes.patch("/contact/:id", emailValidation, patchContactController);

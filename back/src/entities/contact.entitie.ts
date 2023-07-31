@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -17,7 +18,7 @@ class Contact {
   email: string;
   @Column()
   phone_number: string;
-  @CreateDateColumn()
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   register_date: Date;
 
   @ManyToOne(() => User, (user) => user.contacts)

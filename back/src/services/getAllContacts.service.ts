@@ -1,16 +1,26 @@
+import { Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Contact } from "../entities/contact.entitie";
 import { User } from "../entities/user.entitie";
 import { AppError } from "../errors/AppError";
-import { tContactResponse } from "../interfaces/contact.interfaces";
-import { contactResponseSchema } from "../schemas/contact.shcema";
 
 const getAllContactsService = async (userId: number): Promise<Contact[]> => {
-  const contactRepository = AppDataSource.getRepository(Contact);
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  const contacts = await contactRepository.find();
+  const user: User | null = await userRepository.findOne({
+    where: {
+      id: userId,
+    },
+    relations: {
+      contacts: true,
+    },
+  });
 
-  return contacts;
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+  console.log(user);
+  return user.contacts;
 };
 
 export { getAllContactsService };

@@ -5,7 +5,6 @@ import {
   tContactResponse,
 } from "../interfaces/contact.interfaces";
 import { getAllContactsService } from "../services/getAllContacts.service";
-import { contactPacthSchema } from "../schemas/contact.shcema";
 import { patchContactService } from "../services/patchContact.service";
 import { deleteContactService } from "../services/deleteContact.service";
 
@@ -13,10 +12,10 @@ const createContactController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const id = req.params.id;
-  const contactData: any = req.body;
+  const userId = Number(req.params.id);
+  const data: tContactRequest = req.body;
 
-  const newContact: any = await createContactSerivce(id, contactData);
+  const newContact = await createContactSerivce(userId, data);
 
   return res.status(201).json(newContact);
 };
@@ -28,7 +27,7 @@ const getAllContactsController = async (
   const userId = Number(req.params.id);
   const contacts = await getAllContactsService(userId);
 
-  return res.json(contacts);
+  return res.status(200).json(contacts);
 };
 
 const patchContactController = async (req: Request, res: Response) => {
