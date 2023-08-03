@@ -1,4 +1,4 @@
-# 💻 Portfólio
+# 💻 Projeto FullStack
 
 Projeto fullstack que utiliza como principais tecnologias Node e React. Principal objetivo do projeto é a listagem e criação de novos contatos associados à um usuário.
 
