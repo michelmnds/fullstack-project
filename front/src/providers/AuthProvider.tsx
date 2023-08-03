@@ -12,6 +12,12 @@ interface iAuthContextsValues {
     signIn: (data: LoginData) => Promise<void>
 }
 
+export interface iContactData {
+    email: string;
+    full_name: string;
+    phone_number: string;
+}
+
 export const AuthContext = createContext({} as iAuthContextsValues)
 
 export const AuthProvider = ({children}: iAuthProviderProps) => {
@@ -32,6 +38,7 @@ export const AuthProvider = ({children}: iAuthProviderProps) => {
             console.log(error)
         }
     }
+    
     
     return (
         <AuthContext.Provider value={{signIn, user}}>

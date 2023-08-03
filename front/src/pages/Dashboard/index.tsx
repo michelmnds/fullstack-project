@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { api } from "../../services/api"
 import { useAuth } from "../../hooks/useAuth";
-import { UserCard, MainTitle, ContactCard, ContactContainer, ContactTitle, NoContatTitle } from "./style";
+import { UserCard, MainTitle, ContactCard, ContactContainer, ContactTitle, NoContatTitle, ContactHeader, HeaderButton } from "./style";
+import { useNavigate } from "react-router-dom";
 
 export interface iContact {
     id: number;
@@ -20,7 +21,7 @@ export interface iUser{
 export const Dashboard = () => {
     const [contacts, setContacts] = useState<iContact[]>([])
     const {user} = useAuth()
-
+    const navigate = useNavigate()
 
     useEffect(() => {
         (async () => {
@@ -51,7 +52,10 @@ export const Dashboard = () => {
                 </UserCard>
     
                 <main>
-                    <ContactTitle>Contacts:</ContactTitle>
+                    <ContactHeader>
+                        <ContactTitle>Contacts:</ContactTitle>
+                        <HeaderButton onClick={() => navigate("/contact")}>Add New Contact</HeaderButton>
+                    </ContactHeader>
     
                     <ContactContainer>
                     {contacts.map((contact) => 

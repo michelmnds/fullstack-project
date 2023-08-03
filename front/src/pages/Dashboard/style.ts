@@ -63,3 +63,29 @@ export const NoContatTitle = styled.p`
   align-items: center;
   justify-content: center;
 `;
+
+export const ContactHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 98%;
+`;
+
+export const HeaderButton = styled.button`
+  border: 1px solid white;
+  border-radius: 6px;
+  outline: none;
+
+  color: white;
+
+  font-size: 1rem;
+
+  background-color: transparent;
+
+  width: 10rem;
+
+  padding: 0.5rem;
+
+  cursor: pointer;
+`;
