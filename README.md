@@ -20,10 +20,10 @@ Ao finalizar o download das dependências, inicie a visualização do projeto em
 
 ### ▪️ Rotas
 
-Inicial = '/'
-Login = '/login'
-Dashboard do usuário = '/dashboard'
-Edição do usuário = '/edit_user'
-Edição de um contato = '/edit_contact'
+Inicial = '/';
+Login = '/login';
+Dashboard do usuário = '/dashboard';
+Edição do usuário = '/edit_user';
+Edição de um contato = '/edit_contact';
 
 ---
