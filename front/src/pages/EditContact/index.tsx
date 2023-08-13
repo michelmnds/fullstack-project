@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { Dashboard } from "../Dashboard";
+import { useEffect } from "react";
 
 const schema = z.object({
     full_name: z.string(),
@@ -21,7 +22,7 @@ interface iEditData {
 }
 
 export const EditContact = () => {
-    const {user} = useAuth()
+    const user = JSON.parse(localStorage.getItem('user')!)
     const navigate = useNavigate()
     const contact= localStorage.getItem('contact')
     const contactJSON= JSON.parse(contact!)
@@ -38,18 +39,23 @@ export const EditContact = () => {
         }
     }
     
-    return(
-        <>
-            <EditTitle>Edit Contact Info As {user.full_name}</EditTitle>
-
-            <SignUpForm onSubmit={handleSubmit(editContact)}>
-                <label htmlFor="full_name">Name:</label>
-                <SignUpInput type="text" id='full_name' {...register('full_name')} defaultValue={contactJSON.full_name}/>
-                <label htmlFor="phone_number">Phone:</label>
-                <SignUpInput type="text" id='phone_number' {...register('phone_number')} defaultValue={contactJSON.phone_number}/>
-
-                <SignUpButtom>Save</SignUpButtom>
-            </SignUpForm>
-        </>
-    )
+    if (user){
+        return(
+            <>
+                <EditTitle>Edit Contact Info As {user.full_name}</EditTitle>
+    
+                <SignUpForm onSubmit={handleSubmit(editContact)}>
+                    <label htmlFor="full_name">Name:</label>
+                    <SignUpInput type="text" id='full_name' {...register('full_name')} defaultValue={contactJSON.full_name}/>
+                    <label htmlFor="phone_number">Phone:</label>
+                    <SignUpInput type="text" id='phone_number' {...register('phone_number')} defaultValue={contactJSON.phone_number}/>
+    
+                    <SignUpButtom>Save</SignUpButtom>
+                </SignUpForm>
+            </>
+        )
+    } else {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {navigate('/login')})
+    }
 };

@@ -6,6 +6,7 @@ import {z} from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const schema = z.object({
     full_name: z.string(),
@@ -35,18 +36,23 @@ export const EditUser = () => {
         }
     }
     
-    return(
-        <>
-            <EditTitle>Edit User Info As {user.full_name}</EditTitle>
-
-            <SignUpForm onSubmit={handleSubmit(editUser)}>
-                <label htmlFor="full_name">Name:</label>
-                <SignUpInput type="text" id='full_name' {...register('full_name')} defaultValue={user.full_name}/>
-                <label htmlFor="phone_number">Phone:</label>
-                <SignUpInput type="text" id='phone_number' {...register('phone_number')} defaultValue={user.phone_number}/>
-
-                <SignUpButtom>Save</SignUpButtom>
-            </SignUpForm>
-        </>
-    )
+    if (user) {
+        return(
+            <>
+                <EditTitle>Edit User Info As {user.full_name}</EditTitle>
+    
+                <SignUpForm onSubmit={handleSubmit(editUser)}>
+                    <label htmlFor="full_name">Name:</label>
+                    <SignUpInput type="text" id='full_name' {...register('full_name')} defaultValue={user.full_name}/>
+                    <label htmlFor="phone_number">Phone:</label>
+                    <SignUpInput type="text" id='phone_number' {...register('phone_number')} defaultValue={user.phone_number}/>
+    
+                    <SignUpButtom>Save</SignUpButtom>
+                </SignUpForm>
+            </>
+        )
+    } else {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {navigate('/login')})
+    }
 };
