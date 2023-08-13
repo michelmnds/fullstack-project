@@ -30,7 +30,8 @@ export const AuthProvider = ({children}: iAuthProviderProps) => {
         response.data.map((user: iUser) => {
             if(user.email == data.email){
                 setUser(user)
-                    
+                localStorage.clear()
+                localStorage.setItem('user', JSON.stringify(user))
                 navigate('dashboard')
             } 
             })   

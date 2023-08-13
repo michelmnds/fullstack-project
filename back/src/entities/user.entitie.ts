@@ -20,7 +20,7 @@ class User {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   register_date: Date;
 
-  @OneToMany(() => Contact, (contact) => contact.user)
+  @OneToMany(() => Contact, (contact) => contact.user, { cascade: true })
   contacts: Contact[];
 }
 

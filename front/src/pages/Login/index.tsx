@@ -13,11 +13,11 @@ export const Login = () => {
     const {signIn} = useAuth()
     return (
         <LoginContainer>
-            <LoginTintle>Find User</LoginTintle>
+            <LoginTintle>Login</LoginTintle>
 
             <LoginForm onSubmit={handleSubmit(signIn)}>
                 <InputDiv>
-                    <label htmlFor="email">User Email</label>
+                    <label htmlFor="email">Email: </label>
                     <LoginInput type="email" id="email" {...register("email")}/>
                 </InputDiv>
                 

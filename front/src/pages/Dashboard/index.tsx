@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { api } from "../../services/api"
-import { useAuth } from "../../hooks/useAuth";
-import { UserCard, MainTitle, ContactCard, ContactContainer, ContactTitle, NoContatTitle, ContactHeader, HeaderButton } from "./style";
+import { UserCard, MainTitle, ContactCard, ContactContainer, ContactTitle, NoContatTitle, ContactHeader, HeaderButton, CardButtonDiv, CardButton } from "./style";
 import { useNavigate } from "react-router-dom";
 
 export interface iContact {
@@ -20,18 +19,22 @@ export interface iUser{
 
 export const Dashboard = () => {
     const [contacts, setContacts] = useState<iContact[]>([])
-    const {user} = useAuth()
+    const user = JSON.parse(localStorage.getItem('user')!)
     const navigate = useNavigate()
 
     useEffect(() => {
         (async () => {
-            const response = await api.get<iContact[]>(`users/${user.id}/contact`)
+            if (user) {
+                const response = await api.get<iContact[]>(`users/${user.id}/contact`)
 
-            setContacts(response.data)
+                setContacts(response.data)
+            } else {
+                navigate('/')
+            }
         })()
-    }, [])
-    
-    if (contacts) {
+    }, [contacts])
+
+    if (user) {
         return (
             <>
                 <MainTitle>User Dashboard - {user.full_name}</MainTitle>
@@ -49,6 +52,22 @@ export const Dashboard = () => {
                     <p>
                         Phone Number: {user.phone_number}
                     </p>
+    
+                    <CardButtonDiv>
+                        <CardButton onClick={() => navigate('/edit_user')}>Update User</CardButton>
+                        <CardButton onClick={async () => {
+                            try {
+                                contacts.forEach(contact => {
+                                    api.delete(`users/contact/${contact.id}`)
+                                })
+                                await api.delete(`users/${user.id}`)
+                                navigate("/")
+    
+                            } catch (error) {
+                                console.log(error)
+                            }
+                        }}>Delete User</CardButton>
+                    </CardButtonDiv>
                 </UserCard>
     
                 <main>
@@ -73,6 +92,21 @@ export const Dashboard = () => {
                                 Phone Number: {contact.phone_number}
                             </p>
                            
+                           <CardButtonDiv>
+                            <CardButton onClick={async () => {
+                             try {
+                                await api.delete(`users/contact/${contact.id}`)
+                             } catch (error) {
+                                console.log(error)
+                             }
+    
+                            }}>Delete Contact</CardButton>
+                            <CardButton onClick={() => {
+                                const contactJSON = JSON.stringify(contact)
+                                localStorage.setItem('contact', contactJSON)
+                                navigate("/edit_contact")
+                            }}>Edit Contact</CardButton>
+                           </CardButtonDiv>
                         </ContactCard>
                     )}
                 </ContactContainer>
@@ -80,29 +114,4 @@ export const Dashboard = () => {
             </>
         )
     }
-
-    return (
-        <>
-        <MainTitle>User Dashboard - {user.full_name}</MainTitle>
-
-        <UserCard>
-            <p>
-                ID: {user.id}
-            </p>
-            <p>
-                Email: {user.email}
-            </p>
-            <p>
-                Full Name: {user.full_name}
-            </p>
-            <p>
-                Phone Number: {user.phone_number}
-            </p>
-        </UserCard>
-
-        <main>
-            <NoContatTitle>No contacts found</NoContatTitle>
-        </main>
-    </>
-    )
 }

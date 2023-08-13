@@ -2,10 +2,11 @@ import { useForm } from "react-hook-form"
 import { useAuth } from "../../hooks/useAuth"
 import { MainContactTitle } from "./style"
 import { iContactData } from "../../providers/AuthProvider"
-import {z} from 'zod'
+import {string, z} from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { api } from "../../services/api"
 import { useNavigate } from "react-router-dom"
+import { SignUpButtom, SignUpForm, SignUpInput } from "../SignUp/style"
 
 const contactSchema = z.object({
     email: z.string().email().nonempty(),
@@ -13,6 +14,7 @@ const contactSchema = z.object({
     phone_number: z.string().nonempty(),
 
 })
+
 
 export const Contact = () => {
     const {user} = useAuth()
@@ -43,16 +45,16 @@ export const Contact = () => {
         <>
             <MainContactTitle>Create New Contact as {user.full_name}</MainContactTitle>
             
-            <form onSubmit={handleSubmit(createContact)}>
+            <SignUpForm onSubmit={handleSubmit(createContact)}>
                 <label htmlFor="email">Email:</label>
-                <input type="email" id="email" {...register('email')}/>
+                <SignUpInput type="email" id="email" {...register('email')}/>
                 <label htmlFor="full_name">Full Name:</label>
-                <input type="text"  id='full_name' {...register('full_name')}/>
+                <SignUpInput type="text"  id='full_name' {...register('full_name')}/>
                 <label htmlFor="phone_number" >Phone Number:</label>
-                <input type="text" id="phone_number" {...register('phone_number')}/>
+                <SignUpInput type="text" id="phone_number" {...register('phone_number')}/>
                 
-                <button type="submit">Create</button>
-            </form>
+                <SignUpButtom type="submit">Create</SignUpButtom>
+            </SignUpForm>
         </>
     )
 }
