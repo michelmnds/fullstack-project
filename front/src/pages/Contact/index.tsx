@@ -17,7 +17,7 @@ const contactSchema = z.object({
 
 
 export const Contact = () => {
-    const {user} = useAuth()
+    const user = JSON.parse(localStorage.getItem('user')!)
     const navigate = useNavigate()
     const {register, handleSubmit} = useForm<iContactData>({
         resolver: zodResolver(contactSchema)

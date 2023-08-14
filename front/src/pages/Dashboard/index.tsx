@@ -32,7 +32,7 @@ export const Dashboard = () => {
                 navigate('/')
             }
         })()
-    }, [contacts])
+    }, [])
 
     if (user) {
         return (
@@ -96,6 +96,7 @@ export const Dashboard = () => {
                             <CardButton onClick={async () => {
                              try {
                                 await api.delete(`users/contact/${contact.id}`)
+                                window.location.reload()
                              } catch (error) {
                                 console.log(error)
                              }

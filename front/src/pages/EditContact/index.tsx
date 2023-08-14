@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../hooks/useAuth";
 import { SignUpForm, SignUpInput, SignUpButtom } from "../SignUp/style";
 import { EditTitle } from "./style";
-import {string, z} from 'zod'
+import {z} from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../services/api";
 import { useNavigate } from "react-router-dom";
-import { Dashboard } from "../Dashboard";
 import { useEffect } from "react";
 
 const schema = z.object({
